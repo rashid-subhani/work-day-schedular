@@ -6,35 +6,40 @@ $(document).ready(function () {
         $("#currentDay").text(now);
     }
     
-    // function to create Time blocks
     function createTimeBlocks(){
-        let currentTime = dayjs().hour() // gets current hour
+        let currentTime = dayjs().hour(); // gets current hour
 
         //loop for hours
         for(let hour = 9; hour <= 17; hour ++){
-          let timeBlock = $("<div>").addclass("row time-block");
-          let hourCol = $("<div>").addclass("col-md-1 hour").text(dayjs().hour(hour).format("h A"));
+          let timeBlock = $("<div>").addClass("row time-block");
+          let hourCol = $("<div>").addClass("col-md-1 hour").text(dayjs().hour(hour).format("h A"));
 
-          let textCol = $("<textarea>").addclass("col-md-10 description");
+          let textCol = $("<textarea>").addClass("col-md-10 description");
 
         //   check the time block 
         if(hour < currentTime){
-            textCol.addclass("past");
+            textCol.addClass("past");
         }else if(hour === currentTime){
-            textCol.addclass("present");
+            textCol.addClass("present");
         }else{
-            textCol.addclass("future")
+            textCol.addClass("future")
         }
-        //get save event from local storage
-        let saveEvent = localStorage.getItem();
 
-        let saveBtnCol = $("<button>").addclass("col-md-1 saveBtn").html('<i class="fas fa-save"></i>');
+        //get save event from local storage
+        let saveEvent = localStorage.getItem("event_" + hour);
+        if(saveEvent){   //mean true
+            textCol.val(saveEvent); 
+        }
+
+        let saveBtnCol = $("<button>").addClass("col-md-1 saveBtn").html('<i class="fas fa-save"></i>');
         //save button
         saveBtnCol.on("click", function(){
+        let eventText = $(this).siblings(".description").val();
+        let eventHour = $(this).siblings(".hour").text().trim();
 
-
-            //save event to local storage
-            localStorage.setItem();
+        //save event to local storage
+        localStorage.setItem("event_" + dayjs(eventHour, "h A").hour(), eventText);
+           
         });
 
         timeBlock.append(hourCol, textCol, saveBtnCol);
@@ -45,5 +50,5 @@ $(document).ready(function () {
     //call functions
     displayCurrentDate();
     createTimeBlocks();
-})
+});
 
