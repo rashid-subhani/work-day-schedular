@@ -15,7 +15,7 @@ $(document).ready(function () {
           let timeBlock = $("<div>").addclass("row time-block");
           let hourCol = $("<div>").addclass("col-md-1 hour").text(dayjs().hour(hour).format("h A"));
 
-          let textCol = $("<textarea>").addclass("col-md-10");
+          let textCol = $("<textarea>").addclass("col-md-10 description");
 
         //   check the time block 
         if(hour < currentTime){
@@ -25,9 +25,25 @@ $(document).ready(function () {
         }else{
             textCol.addclass("future")
         }
+        //get save event from local storage
+        let saveEvent = localStorage.getItem();
+
+        let saveBtnCol = $("<button>").addclass("col-md-1 saveBtn").html('<i class="fas fa-save"></i>');
+        //save button
+        saveBtnCol.on("click", function(){
+
+
+            //save event to local storage
+            localStorage.setItem();
+        });
+
+        timeBlock.append(hourCol, textCol, saveBtnCol);
+        $(".container").append(timeBlock);
         }
     }
 
+    //call functions
     displayCurrentDate();
+    createTimeBlocks();
 })
 
